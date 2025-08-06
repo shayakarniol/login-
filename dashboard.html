@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+  <script>
+    async function checkLogin() {
+      const token = localStorage.getItem('authToken');
+      if (!token) return window.location.href = 'login.html';
+
+      const res = await fetch('/api/verify', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+
+      if (res.status !== 200) {
+        localStorage.removeItem('authToken');
+        return window.location.href = 'login.html';
+      }
+    }
+
+    window.onload = checkLogin;
+  </script>
+</head>
+<body>
+  <h1>Welcome to the Dashboard</h1>
+  <p>Only logged in users can see this page.</p>
+</body>
+</html>
